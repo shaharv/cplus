@@ -1,4 +1,6 @@
 #include <iostream>
+#include "windows.h"
+
 #include "WinTimer.h"
 
 const double WinTimer::_timerRes = 1000.0; // ms
