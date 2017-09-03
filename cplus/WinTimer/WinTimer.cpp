@@ -3,10 +3,15 @@
 
 #include "WinTimer.h"
 
-const double WinTimer::_timerRes = 1000.0; // ms
-
 WinTimer::WinTimer()
 {
+	WinTimer(1000.0);
+}
+
+WinTimer::WinTimer(double timerRes)
+{
+	_timerRes = timerRes;
+
 	initTimer();
 
 	_timeStart = CurrTime();
@@ -21,7 +26,7 @@ void WinTimer::initTimer()
 		std::cerr << "QueryPerformanceFrequency failed!\n";
 	}
 
-	_timeFreq = double(li.QuadPart) / 1000.0;
+	_timeFreq = double(li.QuadPart) / _timerRes;
 }
 
 int64_t WinTimer::CurrTime()

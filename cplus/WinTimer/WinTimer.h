@@ -6,10 +6,11 @@ class WinTimer
 {
 	int64_t _timeStart;
 	double _timeFreq;
-	static const double _timerRes;
+	double _timerRes;
 
 public:
 	WinTimer();
+	WinTimer(double timeRes);
 	__declspec(noinline) double TimeElapsed();
 	__declspec(noinline) void RestartTimer();
 
