@@ -4,6 +4,10 @@
 
 #ifdef _WIN32
 #include <windows.h>
+#else
+#include <dirent.h>
+#include <string.h>
+#include <sys/stat.h>
 #endif
 
 using std::string;
@@ -14,6 +18,10 @@ bool folderStats(string path, uint64_t& size, uint64_t& subfolders, uint64_t& fi
 
 #ifdef _WIN32
 bool folderStatsWin(string path, uint64_t& size, uint64_t& subfolders, uint64_t& files);
+#else
+bool posixIsFile(const char* path);
+bool posixIsFolder(const char* path);
+bool folderStatsPosix(string path, uint64_t& size, uint64_t& subfolders, uint64_t& files);
 #endif
 
 bool folderStats(string path, uint64_t& size, uint64_t& subfolders, uint64_t& files)
@@ -23,9 +31,11 @@ bool folderStats(string path, uint64_t& size, uint64_t& subfolders, uint64_t& fi
 	#ifdef _WIN32
 	return folderStatsWin(path, size, subfolders, files);
 	#else
-	return false;
+	return folderStatsPosix(path, size, subfolders, files);
 	#endif
 }
+
+#ifdef _WIN32
 
 bool folderStatsWin(string path, uint64_t& size, uint64_t& subfolders, uint64_t& files)
 {
@@ -52,7 +62,7 @@ bool folderStatsWin(string path, uint64_t& size, uint64_t& subfolders, uint64_t&
 			{
 				continue;
 			}
-			
+
 			subfolders++;
 
 			if (!folderStatsWin(path + "\\" + data.cFileName, size, subfolders, files))
@@ -77,6 +87,73 @@ bool folderStatsWin(string path, uint64_t& size, uint64_t& subfolders, uint64_t&
 	return true;
 }
 
+#else
+
+bool posixIsFile(const char* path)
+{
+	struct stat statbuf;
+
+	if (stat(path, &statbuf) != 0)
+	{
+		return false;
+	}
+
+	return (S_ISREG(statbuf.st_mode) || S_ISLNK(statbuf.st_mode));
+}
+
+bool posixIsFolder(const char* path)
+{
+	struct stat statbuf;
+
+	if (stat(path, &statbuf) != 0)
+	{
+		return false;
+	}
+
+	return S_ISDIR(statbuf.st_mode);
+}
+
+bool folderStatsPosix(string path, uint64_t& size, uint64_t& subfolders, uint64_t& files)
+{
+	DIR *dirp;
+	struct dirent *dirEntry;
+
+	if ((dirp = opendir(path.c_str())) == NULL)
+	{
+		return false;
+	}
+
+	cout << "path = " << path << endl;
+
+	while ((dirEntry = readdir(dirp)) != NULL)
+	{
+		// cout << dirEntry->d_name << endl;
+
+		if (posixIsFolder(dirEntry->d_name))
+		{
+			if ((strncmp(dirEntry->d_name, ".", 2) == 0) ||
+				(strncmp(dirEntry->d_name, "..", 3) == 0))
+			{
+				continue;
+			}
+
+			subfolders++;
+
+			folderStatsPosix(path + string(dirEntry->d_name), size, subfolders, files);
+		}
+		else if (posixIsFile(dirEntry->d_name))
+		{
+			files++;
+		}
+	}
+
+	closedir(dirp);
+
+	return true;
+}
+
+#endif
+
 int main(int argc, char *argv[])
 {
 	if (argc == 1)
@@ -84,7 +161,7 @@ int main(int argc, char *argv[])
 		cout << "Please specify a folder path." << endl;
 		return 0;
 	}
-	
+
 	uint64_t size, subfolders, files;
 
 	if (!folderStats(argv[1], size, subfolders, files))
