@@ -19,8 +19,8 @@ bool folderStats(string path, uint64_t& size, uint64_t& subfolders, uint64_t& fi
 #ifdef _WIN32
 bool folderStatsWin(string path, uint64_t& size, uint64_t& subfolders, uint64_t& files);
 #else
-bool posixIsFile(const char* path);
 bool posixIsFolder(const char* path);
+int posixFileSize(const char* path);
 bool folderStatsPosix(string path, uint64_t& size, uint64_t& subfolders, uint64_t& files);
 #endif
 
@@ -31,6 +31,9 @@ bool folderStats(string path, uint64_t& size, uint64_t& subfolders, uint64_t& fi
 	#ifdef _WIN32
 	return folderStatsWin(path, size, subfolders, files);
 	#else
+	// Add root folder size (4096) to total size.
+	// Result is compatible with "du -sh -B1 --apparent-size".
+	size = posixFileSize(path.c_str());
 	return folderStatsPosix(path, size, subfolders, files);
 	#endif
 }
@@ -101,6 +104,18 @@ bool posixIsFolder(const char* path)
 	return S_ISDIR(statbuf.st_mode);
 }
 
+int posixFileSize(const char* path)
+{
+	struct stat statbuf;
+
+	if (stat(path, &statbuf) != 0)
+	{
+		return 0;
+	}
+
+	return statbuf.st_size;
+}
+
 bool folderStatsPosix(string path, uint64_t& size, uint64_t& subfolders, uint64_t& files)
 {
 	DIR *dirp;
@@ -134,6 +149,8 @@ bool folderStatsPosix(string path, uint64_t& size, uint64_t& subfolders, uint64_
 		{
 			files++;
 		}
+
+		size += posixFileSize(curEntry.c_str());
 	}
 
 	closedir(dirp);
