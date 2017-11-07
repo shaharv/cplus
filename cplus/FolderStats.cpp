@@ -89,18 +89,6 @@ bool folderStatsWin(string path, uint64_t& size, uint64_t& subfolders, uint64_t&
 
 #else
 
-bool posixIsFile(const char* path)
-{
-	struct stat statbuf;
-
-	if (stat(path, &statbuf) != 0)
-	{
-		return false;
-	}
-
-	return (S_ISREG(statbuf.st_mode) || S_ISLNK(statbuf.st_mode));
-}
-
 bool posixIsFolder(const char* path)
 {
 	struct stat statbuf;
@@ -123,13 +111,11 @@ bool folderStatsPosix(string path, uint64_t& size, uint64_t& subfolders, uint64_
 		return false;
 	}
 
-	cout << "path = " << path << endl;
-
 	while ((dirEntry = readdir(dirp)) != NULL)
 	{
-		// cout << dirEntry->d_name << endl;
+		string curEntry = path + "/" + string(dirEntry->d_name);
 
-		if (posixIsFolder(dirEntry->d_name))
+		if (posixIsFolder(curEntry.c_str()))
 		{
 			if ((strncmp(dirEntry->d_name, ".", 2) == 0) ||
 				(strncmp(dirEntry->d_name, "..", 3) == 0))
@@ -139,9 +125,12 @@ bool folderStatsPosix(string path, uint64_t& size, uint64_t& subfolders, uint64_
 
 			subfolders++;
 
-			folderStatsPosix(path + string(dirEntry->d_name), size, subfolders, files);
+			if (!folderStatsPosix(curEntry, size, subfolders, files))
+			{
+				return false;
+			}
 		}
-		else if (posixIsFile(dirEntry->d_name))
+		else
 		{
 			files++;
 		}
