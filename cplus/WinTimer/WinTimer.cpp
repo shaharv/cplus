@@ -3,11 +3,6 @@
 
 #include "WinTimer.h"
 
-WinTimer::WinTimer()
-{
-	WinTimer(1000.0);
-}
-
 WinTimer::WinTimer(double timerRes)
 {
 	_timerRes = timerRes;

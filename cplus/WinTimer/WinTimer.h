@@ -9,7 +9,6 @@ class WinTimer
 	double _timerRes;
 
 public:
-	WinTimer();
 	WinTimer(double timeRes);
 	__declspec(noinline) double TimeElapsed();
 	__declspec(noinline) void RestartTimer();
