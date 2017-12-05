@@ -21,7 +21,7 @@ int main()
 	int32_t val01_i32  = INT32_MAX;
 	int64_t val01_i64  = static_cast<int64_t>(val01_i32);
 	uint64_t val01_u64 = static_cast<uint64_t>(val01_i32);
-	
+
 	printf("Test cast #1\n");
 	printf("val01_i32 = %d\n",   val01_i32);
 	printf("val01_i64 = %lld\n", val01_i64);

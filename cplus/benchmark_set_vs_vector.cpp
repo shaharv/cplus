@@ -75,7 +75,7 @@ void benchSet(int size)
 	fillSet(testSet, size);
 	cout << "Set fill, " << size << " elements: " << timer.TimeElapsed() << "ms" << endl;
 
-	timer.RestartTimer(); 
+	timer.RestartTimer();
 	int64_t sum = iterateSet(testSet);
 	cout << "Set itereate, " << size << " elements: " << timer.TimeElapsed() << "ms (test sum = " << sum << ")" << endl;
 
