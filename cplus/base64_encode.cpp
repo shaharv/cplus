@@ -10,35 +10,13 @@ using std::string;
 #define BENCH_ITERATIONS 10000
 #define ASCII_TABLE_SIZE 256
 
+// Kernel encoder function
+extern string base64_stream_encode_plain_64bit(const char *src, size_t srclen);
+
+// Wrapper encoder function
+extern string base64_encode(const char *src, size_t srclen);
+
 const char* dict = "ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789_$";
-
-const char* test_strings[TEST_CASES] = {
-	"",
-	"abcDEF",
-	"Hello world",
-	"Encoding64 test",
-	"// This is... CNN <!-- ",
-	"-9223372036854775807LL - 1",
-	"supercalifragilisticexpialidocious",
-	"https://msdn.microsoft.com/en-us/library/mt764276.aspx",
-	"I always wanted to be somebody, but now I realize I should have been more specific.",	
-	"@P=split//,\".URRUU\\c8R\";@d=split//,\"\nrekcah xinU / lreP rehtona tsuJ\";sub p{@p{\"r$p\",\"u$p\"}=(P,P);pipe\"r$p\",\"u$p\";++$p;($q*=2)+=$f=!fork;map{$P=$P[$f^ord($p{$_})&6];$p{$_}=/ ^$P/ix?$P:close$_}keys%p}p;p;p;p;p;map{$p{$_}=~/^[P.]/&&close$_}%p;wait until$?;map{/^r/&&<$_>}%p;$_=$d[$q];sleep rand(2)if/\\S/;print",
-};
-
-int test_strings_lengths[TEST_CASES];
-
-const char* reference_encode64[TEST_CASES] = {
-	"",
-	"YWJjREVG",
-	"SGVsbG8gd29ybGQ",
-	"RW5jb2Rpbmc2NCB00ZXN00",
-	"Ly8gVGhpcyBpcy4uLiBDTk4gPCEtLSA",
-	"LTkyMjMzNzIwMzY4NTQ3NzU4MDdMTCAtIDE",
-	"c3VwZXJjYWxpZnJhZ2lsaXN00aWNleHBpYWxpZG9jaW91cw",
-	"aHR00cHM6Ly9tc2RuLm1pY3Jvc29mdC5jb200vZW4tdXMvbGlicmFyeS9tdDc2NDI3Ni5hc3B4",
-	"SSBhbHdheXMgd2FudGVkIHRvIGJlIHNvbWVib2R5LCBidXQgbm93IEkgcmVhbGl6ZSBJIHNob3VsZCBoYXZlIGJlZW4gbW9yZSBzcGVjaWZpYy4",	
-	"QFA9c3BsaXQvLywiLlVSUlVVXGM4UiI7QGQ9c3BsaXQvLywiCnJla2NhaCB4aW5VIC8gbHJlUCByZWh00b25hIHRzdUoiO3N1YiBwe00BweyJyJHAiLCJ1JHAifT00oUCxQKTtwaXBlInIkcCIsInUkcCI7KyskcDsoJHEqPTIpKz00kZj00hZm9yazttYXB7JFA9JFBbJGZeb3JkKCRweyRffSkmNl007JHB7JF99PS8gXiRQL2l4PyRQOmNsb3NlJF99a2V5cyVwfXA7cDtwO3A7cDttYXB7JHB7JF99PX4vXltQLl00vJiZjbG9zZSRffSVwO3dhaXQgdW500aWwkPzttYXB7L15yLyYmPCRfPn00lcDskXz00kZFskcV007c2xlZXAgcmFuZCgyKWlmL1xTLztwcmludA",
-};
 
 string encode64_naive(const char* src, uint32_t length)
 {
@@ -137,6 +115,34 @@ string encode64_naive_dict2(const char* src, uint32_t length)
 	return result;
 }
 
+const char* test_strings[TEST_CASES] = {
+	"",
+	"abcDEF",
+	"Hello world",
+	"Encoding64 test",
+	"// This is... CNN <!-- ",
+	"-9223372036854775807LL - 1",
+	"supercalifragilisticexpialidocious",
+	"https://msdn.microsoft.com/en-us/library/mt764276.aspx",
+	"I always wanted to be somebody, but now I realize I should have been more specific.",
+	"@P=split//,\".URRUU\\c8R\";@d=split//,\"\nrekcah xinU / lreP rehtona tsuJ\";sub p{@p{\"r$p\",\"u$p\"}=(P,P);pipe\"r$p\",\"u$p\";++$p;($q*=2)+=$f=!fork;map{$P=$P[$f^ord($p{$_})&6];$p{$_}=/ ^$P/ix?$P:close$_}keys%p}p;p;p;p;p;map{$p{$_}=~/^[P.]/&&close$_}%p;wait until$?;map{/^r/&&<$_>}%p;$_=$d[$q];sleep rand(2)if/\\S/;print",
+};
+
+int test_strings_lengths[TEST_CASES];
+
+const char* reference_encode64[TEST_CASES] = {
+	"",
+	"YWJjREVG",
+	"SGVsbG8gd29ybGQ",
+	"RW5jb2Rpbmc2NCB00ZXN00",
+	"Ly8gVGhpcyBpcy4uLiBDTk4gPCEtLSA",
+	"LTkyMjMzNzIwMzY4NTQ3NzU4MDdMTCAtIDE",
+	"c3VwZXJjYWxpZnJhZ2lsaXN00aWNleHBpYWxpZG9jaW91cw",
+	"aHR00cHM6Ly9tc2RuLm1pY3Jvc29mdC5jb200vZW4tdXMvbGlicmFyeS9tdDc2NDI3Ni5hc3B4",
+	"SSBhbHdheXMgd2FudGVkIHRvIGJlIHNvbWVib2R5LCBidXQgbm93IEkgcmVhbGl6ZSBJIHNob3VsZCBoYXZlIGJlZW4gbW9yZSBzcGVjaWZpYy4",
+	"QFA9c3BsaXQvLywiLlVSUlVVXGM4UiI7QGQ9c3BsaXQvLywiCnJla2NhaCB4aW5VIC8gbHJlUCByZWh00b25hIHRzdUoiO3N1YiBwe00BweyJyJHAiLCJ1JHAifT00oUCxQKTtwaXBlInIkcCIsInUkcCI7KyskcDsoJHEqPTIpKz00kZj00hZm9yazttYXB7JFA9JFBbJGZeb3JkKCRweyRffSkmNl007JHB7JF99PS8gXiRQL2l4PyRQOmNsb3NlJF99a2V5cyVwfXA7cDtwO3A7cDttYXB7JHB7JF99PX4vXltQLl00vJiZjbG9zZSRffSVwO3dhaXQgdW500aWwkPzttYXB7L15yLyYmPCRfPn00lcDskXz00kZFskcV007c2xlZXAgcmFuZCgyKWlmL1xTLztwcmludA",
+};
+
 void init_lengths()
 {
 	for (int i = 0; i < TEST_CASES; i++)
@@ -145,12 +151,14 @@ void init_lengths()
 	}		
 }
 
-bool test_string_encode(const char* src, const char* ref)
+bool test_string_encode(const char* src, size_t srclen, const char* ref)
 {
 	string expected = string(ref);
 
-	string encoded = encode64_naive(src, strlen(src));
-	//string encoded = encode64_naive_dict2(src, strlen(src));
+	//string encoded = encode64_naive(src, srclen);
+	//string encoded = encode64_naive_dict2(src, srclen);
+	//string encoded = base64_stream_encode_plain_64bit(src, srclen);
+	string encoded = base64_encode(src, srclen);
 
 	if (encoded != expected)
 	{
@@ -170,8 +178,10 @@ void benchmark_string_encode(const char* src, int len)
 	
 	for (int j = 0; j < BENCH_ITERATIONS; j++)
 	{
-		encode64_naive(src, len);
+		//encode64_naive(src, len);
 		//encode64_naive_dict2(src, len);
+		//base64_stream_encode_plain_64bit(src, len);
+		base64_encode(src, len);
 	}
 	
 	cout << timer.TimeElapsed() << "ms (" << BENCH_ITERATIONS << " iterations)" << endl;	
@@ -187,7 +197,7 @@ int main()
 	{
 		cout << "Encoding test #" << i + 1 << "... ";
 		
-		if (!test_string_encode(test_strings[i], reference_encode64[i]))
+		if (!test_string_encode(test_strings[i], strlen(test_strings[i]), reference_encode64[i]))
 		{
 			failed++;			
 		}
