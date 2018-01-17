@@ -13,7 +13,7 @@ using std::endl;
 using std::string;
 
 #define TEST_CASES 10
-#define BENCH_ITERATIONS 10000
+#define BENCH_ITERATIONS 50000
 #define ASCII_TABLE_SIZE 256
 
 // Kernel encoder function
@@ -101,7 +101,7 @@ string encode64_naive_dict2(const char* src, uint32_t length)
 		char c = dict[d];
 		resArr[resIdx] = c;
 
-		char c2 = dictExtra[c];
+		char c2 = dictExtra[static_cast<int32_t>(c)];
 
 		if (c2)
 		{
@@ -181,9 +181,9 @@ bool test_string_encode(const char* src, size_t srclen, const char* ref)
 void benchmark_string_encode(const char* src, int len)
 {
 #ifdef WIN32
-	WinTimer timer(1000.0); // ms
+	WinTimer timer(1000.0); // us
 #else
-	PosixTimer timer(1000.0); // ms
+	PosixTimer timer(1000); // us
 #endif
 
 	for (int j = 0; j < BENCH_ITERATIONS; j++)
@@ -194,7 +194,7 @@ void benchmark_string_encode(const char* src, int len)
 		//base64_encode(src, len);
 	}
 
-	cout << timer.TimeElapsed() << "ms (" << BENCH_ITERATIONS << " iterations)" << endl;
+	cout << timer.TimeElapsed() << "us (" << BENCH_ITERATIONS << " iterations)" << endl;
 }
 
 int main()
