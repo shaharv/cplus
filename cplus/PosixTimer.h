@@ -6,33 +6,33 @@
 class PosixTimer
 {
 	int64_t _startTime;
-	double _timerRes;
+	int32_t _timerRes;
 
 public:
 	PosixTimer()
 	{
-		_timerRes = 1000.0;
+		_timerRes = 1000;
 
 		_startTime = currTimeNs();
 	}
 
-	PosixTimer(double timerRes)
+	PosixTimer(int64_t timerRes)
 	{
 		_timerRes = timerRes;
 
 		_startTime = currTimeNs();
 	}
 
-	double TimeElapsed()
+	int64_t TimeElapsed()
 	{
                 int64_t currTime = currTimeNs();
 
 		if (currTime == -1)
 		{
-                        return 0.0;
+                        return -1;
 		}
 
-		return double(currTime - _startTime) / _timerRes;
+		return (currTime - _startTime) / _timerRes;
 	}
 
 	void RestartTimer()
@@ -45,7 +45,7 @@ private:
 	{
 		struct timespec time;
 
-		if (clock_gettime(CLOCK_PROCESS_CPUTIME_ID, &time) == -1)
+		if (clock_gettime(CLOCK_MONOTONIC, &time) == -1)
 		{
 			std::cerr << "clock_gettime failed!\n";
 
