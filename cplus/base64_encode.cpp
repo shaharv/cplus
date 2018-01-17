@@ -4,6 +4,8 @@
 
 #ifdef _WIN32
 #include "WinTimer.h"
+#else
+#include "PosixTimer.h"
 #endif
 
 using std::cout;
@@ -180,6 +182,8 @@ void benchmark_string_encode(const char* src, int len)
 {
 #ifdef WIN32
 	WinTimer timer(1000.0); // ms
+#else
+	PosixTimer timer(1000.0); // ms
 #endif
 
 	for (int j = 0; j < BENCH_ITERATIONS; j++)
@@ -190,9 +194,7 @@ void benchmark_string_encode(const char* src, int len)
 		//base64_encode(src, len);
 	}
 
-#ifdef WIN32
 	cout << timer.TimeElapsed() << "ms (" << BENCH_ITERATIONS << " iterations)" << endl;
-#endif
 }
 
 int main()
