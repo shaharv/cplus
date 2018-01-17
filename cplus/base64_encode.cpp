@@ -65,6 +65,41 @@ string encode64_naive(const char* src, uint32_t length)
 	return result;
 }
 
+string encode64_naive_string(const char* src, uint32_t length)
+{
+	string result;
+	result.reserve(length * 2 + 1);
+
+	uint32_t e = 0;
+	uint8_t i = 0;
+
+	while (e < length)
+	{
+		uint8_t d;
+
+		switch (i)
+		{
+			case 0: i = 1; d = ((src[e] >> 2) & 0x3f); break;
+			case 1: i = 2; d = (((src[e] & 0x03) << 4) | ((e + 1 < length) ? ((src[e + 1] >> 4) & 0x0f) : 0)); ++e; break;
+			case 2: i = 3; d = (((src[e] & 0x0f) << 2) | ((e + 1 < length) ? ((src[e + 1] >> 6) & 0x03) : 0)); ++e; break;
+			case 3: i = 0; d = (src[e] & 0x3f); ++e; break;
+		}
+
+		const char c = dict[d];
+
+		switch (c)
+		{
+			case '0':	result.append("00", 2); break;
+			case '_':	result.append("01", 2); break;
+			case '$':	result.append("02", 2); break;
+
+			default:	result.append(1, c); break;
+		}
+	}
+
+	return result;
+}
+
 string encode64_naive_dict2(const char* src, uint32_t length)
 {
 	const char dictExtra[ASCII_TABLE_SIZE] = {
@@ -161,7 +196,8 @@ bool test_string_encode(const char* src, size_t srclen, const char* ref)
 {
 	string expected = string(ref);
 
-	string encoded = encode64_naive(src, srclen);
+	//string encoded = encode64_naive(src, srclen);
+	string encoded = encode64_naive_string(src, srclen);
 	//string encoded = encode64_naive_dict2(src, srclen);
 	//string encoded = base64_stream_encode_plain_64bit(src, srclen);
 	//string encoded = base64_encode(src, srclen);
@@ -188,7 +224,8 @@ void benchmark_string_encode(const char* src, int len)
 
 	for (int j = 0; j < BENCH_ITERATIONS; j++)
 	{
-		encode64_naive(src, len);
+		//encode64_naive(src, len);
+		encode64_naive_string(src, len);
 		//encode64_naive_dict2(src, len);
 		//base64_stream_encode_plain_64bit(src, len);
 		//base64_encode(src, len);
