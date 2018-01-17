@@ -1,6 +1,10 @@
+#include <cstring>
 #include <iostream>
 #include <string>
+
+#ifdef _WIN32
 #include "WinTimer.h"
+#endif
 
 using std::cout;
 using std::endl;
@@ -155,10 +159,10 @@ bool test_string_encode(const char* src, size_t srclen, const char* ref)
 {
 	string expected = string(ref);
 
-	//string encoded = encode64_naive(src, srclen);
+	string encoded = encode64_naive(src, srclen);
 	//string encoded = encode64_naive_dict2(src, srclen);
 	//string encoded = base64_stream_encode_plain_64bit(src, srclen);
-	string encoded = base64_encode(src, srclen);
+	//string encoded = base64_encode(src, srclen);
 
 	if (encoded != expected)
 	{
@@ -174,17 +178,21 @@ bool test_string_encode(const char* src, size_t srclen, const char* ref)
 
 void benchmark_string_encode(const char* src, int len)
 {
+#ifdef WIN32
 	WinTimer timer(1000.0); // ms
+#endif
 
 	for (int j = 0; j < BENCH_ITERATIONS; j++)
 	{
-		//encode64_naive(src, len);
+		encode64_naive(src, len);
 		//encode64_naive_dict2(src, len);
 		//base64_stream_encode_plain_64bit(src, len);
-		base64_encode(src, len);
+		//base64_encode(src, len);
 	}
 
-	cout << timer.TimeElapsed() << "ms (" << BENCH_ITERATIONS << " iterations)" << endl;	
+#ifdef WIN32
+	cout << timer.TimeElapsed() << "ms (" << BENCH_ITERATIONS << " iterations)" << endl;
+#endif
 }
 
 int main()
@@ -195,7 +203,7 @@ int main()
 
 	for (int i = 0; i < TEST_CASES; i++)
 	{
-		cout << "Encoding test #" << i + 1 << "... ";
+		cout << "Encoding test #" << i + 1 << "... " << endl;
 
 		if (!test_string_encode(test_strings[i], strlen(test_strings[i]), reference_encode64[i]))
 		{
