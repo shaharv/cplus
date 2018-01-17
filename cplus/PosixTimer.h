@@ -11,7 +11,7 @@ class PosixTimer
 public:
 	PosixTimer()
 	{
-		_timerRes = 1000;
+		_timerRes = 1000; // us
 
 		_startTime = currTimeNs();
 	}
