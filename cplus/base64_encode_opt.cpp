@@ -132,7 +132,7 @@ string base64_stream_encode_plain_64bit(const char *src, size_t srclen)
 	}
 
 	char* out = new char[srclen * 2 + 1];
-	
+
 	// Assume that *out is large enough to contain the output.
 	// Theoretically it should be 4/3 the length of src.
 	const uint8_t *c = (const uint8_t *)src;
@@ -154,7 +154,7 @@ string base64_stream_encode_plain_64bit(const char *src, size_t srclen)
 	{
 		for (;;)
 		{
-		case 0:	
+		case 0:
 			// If we have 64-bit ints, pick off 6 bytes at a time for as long as we can,
 			// but ensure that there are at least 8 bytes available to avoid segfaulting:
 			while (srclen >= 8)
@@ -183,7 +183,7 @@ string base64_stream_encode_plain_64bit(const char *src, size_t srclen)
 				outl += 8;	// 8 bytes of output
 				srclen -= 6;
 			}
-	
+
 			if (srclen-- == 0) {
 				break;
 			}
@@ -192,7 +192,7 @@ string base64_stream_encode_plain_64bit(const char *src, size_t srclen)
 			bytes++;
 			outl += 1;
 
-		case 1:	
+		case 1:
 			if (srclen-- == 0) {
 				break;
 			}
@@ -201,7 +201,7 @@ string base64_stream_encode_plain_64bit(const char *src, size_t srclen)
 			bytes++;
 			outl += 1;
 
-		case 2:	
+		case 2:
 			if (srclen-- == 0) {
 				break;
 			}
@@ -224,5 +224,5 @@ string base64_stream_encode_plain_64bit(const char *src, size_t srclen)
 
 	delete[] out;
 
-	return result;	
+	return result;
 }

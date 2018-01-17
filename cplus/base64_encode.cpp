@@ -72,8 +72,8 @@ string encode64_naive_dict2(const char* src, uint32_t length)
 		0,  0,  0,  0,  0,  0,  0,  0,  0,  0,	/* 70 .. 79 */
 		0,  0,  0,  0,  0,  0,  0,  0,  0,  0,	/* 80 .. 89 */
 		0,  0,  0,  0,  0, '1', 0,  0,  0,  0,	/* 90 .. 99 */ // '_'(95)
-	};	
-	
+	};
+
 	char* resArr = new char[length * 2 + 1];
 
 	uint32_t e = 0;
@@ -94,15 +94,15 @@ string encode64_naive_dict2(const char* src, uint32_t length)
 
 		char c = dict[d];
 		resArr[resIdx] = c;
-		
+
 		char c2 = dictExtra[c];
-		
+
 		if (c2)
 		{
 			resArr[resIdx++] = '0';
 			resArr[resIdx] = c2;
 		}
-		
+
 		resIdx++;
 	}
 
@@ -148,7 +148,7 @@ void init_lengths()
 	for (int i = 0; i < TEST_CASES; i++)
 	{
 		test_strings_lengths[i] = strlen(test_strings[i]);
-	}		
+	}
 }
 
 bool test_string_encode(const char* src, size_t srclen, const char* ref)
@@ -165,17 +165,17 @@ bool test_string_encode(const char* src, size_t srclen, const char* ref)
 		cout << "Test failed! " << endl;
 		cout << "Encoded  = " << encoded << endl;
 		cout << "Expected = " << expected << endl;
-		
+
 		return false;
 	}
-				
+
 	return true;
 }
 
 void benchmark_string_encode(const char* src, int len)
 {
 	WinTimer timer(1000.0); // ms
-	
+
 	for (int j = 0; j < BENCH_ITERATIONS; j++)
 	{
 		//encode64_naive(src, len);
@@ -183,29 +183,29 @@ void benchmark_string_encode(const char* src, int len)
 		//base64_stream_encode_plain_64bit(src, len);
 		base64_encode(src, len);
 	}
-	
+
 	cout << timer.TimeElapsed() << "ms (" << BENCH_ITERATIONS << " iterations)" << endl;	
 }
 
 int main()
 {
 	int failed = 0;
-	
+
 	init_lengths();
-	
+
 	for (int i = 0; i < TEST_CASES; i++)
 	{
 		cout << "Encoding test #" << i + 1 << "... ";
-		
+
 		if (!test_string_encode(test_strings[i], strlen(test_strings[i]), reference_encode64[i]))
 		{
-			failed++;			
+			failed++;
 		}
-		
+
 		benchmark_string_encode(test_strings[i], test_strings_lengths[i]);
 	}
-	
+
 	cout << "[" << (TEST_CASES - failed) << "/" << TEST_CASES << "] passed." << endl;
-	
+
 	return 0;
 }
