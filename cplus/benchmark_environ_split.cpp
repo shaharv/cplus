@@ -34,7 +34,7 @@ std::string nsTimeToStr(int64_t ns)
 
 void getEnvVars_v1(vector<string>* envVars)
 {
-    PosixTimer timer(1);
+	PosixTimer timer(1);
 
 	for (char* envVarChar = *environ; *envVarChar != '\0'; envVarChar++)
 	{
@@ -57,6 +57,10 @@ void getEnvVars_v1(vector<string>* envVars)
 		string varname(name, value - name);
 		string varval(++value);
 
+		#ifdef DEBUG_VARS
+		cout << varname << "=" << varval << endl;
+		#endif
+
 		envVars->push_back(varname);
 		envVars->push_back(varval);
 	}
@@ -66,7 +70,7 @@ void getEnvVars_v1(vector<string>* envVars)
 
 void getEnvVars_v2(vector<string>* envVars)
 {
-    PosixTimer timer(1);
+	PosixTimer timer(1);
 
 	for (char* envVarStr = *environ; *envVarStr != '\0'; envVarStr = strchr(envVarStr, '\0') + 1)
 	{
@@ -79,6 +83,10 @@ void getEnvVars_v2(vector<string>* envVars)
 
 		string varname = string(envVarStr, envVarSeperator - envVarStr);
 		string varval = string((char*)(envVarSeperator + 1));
+
+		#ifdef DEBUG_VARS
+		cout << varname << "=" << varval << endl;
+		#endif
 
 		envVars->push_back(varname);
 		envVars->push_back(varval);
@@ -98,9 +106,6 @@ int main()
 
 		getEnvVars_v1(&envVarsV1);
 		getEnvVars_v2(&envVarsV2);
-
-		cout << envVarsV1.size() << endl;
-		cout << envVarsV2.size() << endl;
 	}
 
 	return 0;
