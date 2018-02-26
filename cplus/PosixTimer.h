@@ -11,7 +11,7 @@ class PosixTimer
 public:
 	PosixTimer()
 	{
-		_timerRes = 1000; // us
+		_timerRes = 1000000; // us
 
 		_startTime = currTimeNs();
 	}
@@ -52,6 +52,6 @@ private:
                         return -1;
 		}
 
-		return time.tv_nsec;
+		return (time.tv_nsec + (time.tv_sec * 1000000000));
 	}
 };
