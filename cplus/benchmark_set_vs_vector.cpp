@@ -5,16 +5,21 @@
 #ifdef _WIN32
 #include <windows.h>
 #include "WinTimer.h"
+#define SNPRINTF _snprintf
 #else
 #include "PosixTimer.h"
+#define SNPRINTF snprintf
 #endif
+
+static const int32_t NANOSEC_IN_MILLISEC = 1000000;
+
+typedef int64_t test_t;
 
 using std::cout;
 using std::endl;
 using std::vector;
 using std::set;
-
-typedef int64_t test_t;
+using std::string;
 
 void fillVector(vector<test_t>& testVec, int vecSize)
 {
@@ -56,22 +61,39 @@ test_t iterateSet(set<test_t>& testSet)
 	return sum;
 }
 
+std::string strFromInt64(int64_t num)
+{
+	const int32_t MIN_INT64_STRLEN = 21; // 19 digits + sign + null terminator
+	char chArr[MIN_INT64_STRLEN];
+	SNPRINTF(chArr, MIN_INT64_STRLEN, "%lld", static_cast<long long int>(num));
+	return std::string(chArr);
+}
+
+std::string nsTimeToStr(int64_t ns)
+{
+	string str = strFromInt64(ns);
+	str.append(" us (");
+	str.append(strFromInt64(ns / NANOSEC_IN_MILLISEC));
+	str.append(" ms)");
+	return str;
+}
+
 void benchVector(int size)
 {
 	vector<test_t> testVec;
 
 #ifdef WIN32
-	WinTimer timer(1000000.0); // ms
+	WinTimer timer(1); // us
 #else
-	PosixTimer timer(1000000); // ms
+	PosixTimer timer(1); // us
 #endif
 
 	fillVector(testVec, size);
-	cout << "Vector fill, " << size << " elements: " << timer.TimeElapsed() << "ms" << endl;
+	cout << "Vector fill, " << size << " elements: " << nsTimeToStr(timer.TimeElapsed()) << endl;
 
 	timer.RestartTimer();
 	int64_t sum = iterateVector(testVec);
-	cout << "Vector itereate, " << size << " elements: " << timer.TimeElapsed() << "ms (test sum = " << sum << ")" << endl;
+	cout << "Vector itereate, " << size << " elements: " << nsTimeToStr(timer.TimeElapsed()) << " (test sum = " << sum << ")" << endl;
 
 	return;
 }
@@ -81,24 +103,24 @@ void benchSet(int size)
 	set<test_t> testSet;
 
 #ifdef WIN32
-	WinTimer timer(1000000.0); // ms
+	WinTimer timer(1); // us
 #else
-	PosixTimer timer(1000000); // ms
+	PosixTimer timer(1); // us
 #endif
 
 	fillSet(testSet, size);
-	cout << "Set fill, " << size << " elements: " << timer.TimeElapsed() << "ms" << endl;
+	cout << "Set fill, " << size << " elements: " << nsTimeToStr(timer.TimeElapsed()) << endl;
 
 	timer.RestartTimer();
 	int64_t sum = iterateSet(testSet);
-	cout << "Set itereate, " << size << " elements: " << timer.TimeElapsed() << "ms (test sum = " << sum << ")" << endl;
+	cout << "Set itereate, " << size << " elements: " << nsTimeToStr(timer.TimeElapsed()) << " (test sum = " << sum << ")" << endl;
 
 	return;
 }
 
 int main()
 {
-	for (int64_t size = 100, i = 1; size <= 10000000; size *= 10, i++)
+	for (int64_t size = 100, i = 1; size <= 100000000; size *= 10, i++)
 	{
 		cout << "Test " << i << endl;
 		benchVector(size);
