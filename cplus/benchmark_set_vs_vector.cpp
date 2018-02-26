@@ -1,9 +1,13 @@
 #include <iostream>
 #include <vector>
 #include <set>
-#include <windows.h>
 
+#ifdef _WIN32
+#include <windows.h>
 #include "WinTimer.h"
+#else
+#include "PosixTimer.h"
+#endif
 
 using std::cout;
 using std::endl;
@@ -56,7 +60,12 @@ void benchVector(int size)
 {
 	vector<test_t> testVec;
 
-	WinTimer timer(1000.0); // ms
+#ifdef WIN32
+	WinTimer timer(1000.0); // us
+#else
+	PosixTimer timer(1000); // us
+#endif
+
 	fillVector(testVec, size);
 	cout << "Vector fill, " << size << " elements: " << timer.TimeElapsed() << "ms" << endl;
 
@@ -71,7 +80,12 @@ void benchSet(int size)
 {
 	set<test_t> testSet;
 
-	WinTimer timer(1000.0); // ms
+#ifdef WIN32
+	WinTimer timer(1000.0); // us
+#else
+	PosixTimer timer(1000); // us
+#endif
+
 	fillSet(testSet, size);
 	cout << "Set fill, " << size << " elements: " << timer.TimeElapsed() << "ms" << endl;
 
