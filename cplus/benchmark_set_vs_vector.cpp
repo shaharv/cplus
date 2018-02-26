@@ -61,9 +61,9 @@ void benchVector(int size)
 	vector<test_t> testVec;
 
 #ifdef WIN32
-	WinTimer timer(1000.0); // us
+	WinTimer timer(1000000.0); // ms
 #else
-	PosixTimer timer(1000); // us
+	PosixTimer timer(1000000); // ms
 #endif
 
 	fillVector(testVec, size);
@@ -81,9 +81,9 @@ void benchSet(int size)
 	set<test_t> testSet;
 
 #ifdef WIN32
-	WinTimer timer(1000.0); // us
+	WinTimer timer(1000000.0); // ms
 #else
-	PosixTimer timer(1000); // us
+	PosixTimer timer(1000000); // ms
 #endif
 
 	fillSet(testSet, size);
@@ -98,7 +98,7 @@ void benchSet(int size)
 
 int main()
 {
-	for (int size = 100, i = 1; size <= 10000000; size *= 10, i++)
+	for (int64_t size = 100, i = 1; size <= 10000000; size *= 10, i++)
 	{
 		cout << "Test " << i << endl;
 		benchVector(size);
