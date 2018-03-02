@@ -1,2 +1,0 @@
-# snippets
-Useful code snippets.
