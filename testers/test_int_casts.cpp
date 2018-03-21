@@ -23,9 +23,9 @@ int main()
 	uint64_t val01_u64 = static_cast<uint64_t>(val01_i32);
 
 	printf("Test cast #1.1: i32 -> i64/u64\n");
-	printf("val01_i32 = %d\n",   val01_i32);
-	printf("val01_i64 = %lld\n", val01_i64);
-	printf("val01_u64 = %llu\n", val01_u64);
+	printf("val01_i32 = %d\n",  val01_i32);
+	printf("val01_i64 = %ld\n", val01_i64);
+	printf("val01_u64 = %lu\n", val01_u64);
 	printf("\n");
 
 	val01_i32 = -1;
@@ -33,9 +33,9 @@ int main()
 	val01_u64 = static_cast<uint64_t>(val01_i32);
 
 	printf("Test cast #1.2: i32 -> i64/u64\n");
-	printf("val01_i32 = %d\n",   val01_i32);
-	printf("val01_i64 = %lld\n", val01_i64);
-	printf("val01_u64 = %llu\n", val01_u64);
+	printf("val01_i32 = %d\n",  val01_i32);
+	printf("val01_i64 = %ld\n", val01_i64);
+	printf("val01_u64 = %lu\n", val01_u64);
 	printf("\n");
 
 	uint32_t val02_u32 = UINT32_MAX;
@@ -43,29 +43,29 @@ int main()
 	uint64_t val02_u64 = static_cast<uint64_t>(val02_u32);
 
 	printf("Test cast #2: u32 -> i64/u64\n");
-	printf("val02_u32 = %u\n", val02_u32);
-	printf("val02_i64 = %lld\n", val02_i64);
-	printf("val02_u64 = %llu\n", val02_u64);
+	printf("val02_u32 = %u\n",  val02_u32);
+	printf("val02_i64 = %ld\n", val02_i64);
+	printf("val02_u64 = %lu\n", val02_u64);
 	printf("\n");
 
 	int64_t val03_i64 = 0xfeffffffffffffffll;
 	int32_t val03_i32 = static_cast<int32_t>(val03_i64);
 
 	printf("Test cast #3: i64 -> i32 truncation\n");
-	printf("val03_i64 = %lld\n", val03_i64);
-	printf("val03_i64 = 0x%llx\n", val03_i64);
-	printf("val03_i32 = %d\n", val03_i32);
-	printf("val03_i32 = 0x%x\n", val03_i32);
+	printf("val03_i64 = %ld\n",   val03_i64);
+	printf("val03_i64 = 0x%lx\n", val03_i64);
+	printf("val03_i32 = %d\n",    val03_i32);
+	printf("val03_i32 = 0x%x\n",  val03_i32);
 	printf("\n");
 
 	int64_t val04_i64 = 0x6effffffffffffffll;
 	int32_t val04_i32 = static_cast<int32_t>(val04_i64);
 
 	printf("Test cast #4: i64 -> i32 truncation\n");
-	printf("val04_i64 = %lld\n", val04_i64);
-	printf("val04_i64 = 0x%llx\n", val04_i64);
-	printf("val04_i32 = %d\n", val04_i32);
-	printf("val04_i32 = 0x%x\n", val04_i32);
+	printf("val04_i64 = %ld\n",   val04_i64);
+	printf("val04_i64 = 0x%lx\n", val04_i64);
+	printf("val04_i32 = %d\n",    val04_i32);
+	printf("val04_i32 = 0x%x\n",  val04_i32);
 	printf("\n");
 
 	return 0;
