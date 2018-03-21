@@ -28,7 +28,7 @@ int main()
 	printf("val01_u64 = %llu\n", val01_u64);
 	printf("\n");
 
-	int32_t val02_u32  = UINT32_MAX;
+	uint32_t val02_u32 = UINT32_MAX;
 	int64_t val02_i64  = static_cast<int64_t>(val02_u32);
 	uint64_t val02_u64 = static_cast<uint64_t>(val02_u32);
 
