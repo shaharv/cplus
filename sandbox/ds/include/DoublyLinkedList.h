@@ -106,6 +106,7 @@ public:
 		_tail->_next = newTail;
 		_tail = newTail;
 		_size++;
+
 		return _tail;
 	}
 
@@ -144,6 +145,37 @@ public:
 
 		delete node;
 		_size--;
+	}
+
+	void reverse()
+	{
+		if (_size == 0)
+		{
+			return;
+		}
+
+		assert((_head != NULL) && (_tail != NULL));
+
+		Node* origTail = _tail;
+		Node* origHead = _head;
+		Node* revIter  = origTail;
+		Node* lastIter = NULL;
+
+		while (revIter != NULL)
+		{
+			Node* prev = revIter->_prev;
+
+			revIter->_next = prev;
+			revIter->_prev = lastIter;
+
+			lastIter = revIter;
+			revIter = prev;
+		}
+
+		_head = origTail;
+		_head->_prev = NULL;
+		_tail = origHead;
+		_tail->_next = NULL;
 	}
 
 	void print()

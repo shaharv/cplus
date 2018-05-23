@@ -31,13 +31,30 @@ int main()
 	cout <<"Test case end." << endl << endl;
 
 	// assignment test
-        DoublyLinkedList<int32_t> list3(list);
+	DoublyLinkedList<int32_t> list3(list);
 	cout << "Assignment test:" << endl;
 	list.remove(list.tail());
 	list.remove(list.tail());
 	list3 = list;
 	list3.print();
 	list.print();
+	cout <<"Test case end." << endl << endl;
+
+	// reversal test
+	cout << "Reversal test #1:" << endl;
+	list3.reverse();
+	list3.print();
+	cout <<"Test case end." << endl << endl;
+
+	// reversal test
+	cout << "Reversal test #2:" << endl;
+	cout << "Original list:" << endl;
+	list3.print();
+	cout << "Insert 55 to end..." << endl;
+	list3.insert(55);
+	cout << "Reversed:" << endl;
+	list3.reverse();
+	list3.print();
 	cout <<"Test case end." << endl << endl;
 
 	// remove test
