@@ -118,7 +118,7 @@ public:
 		}
 
 		Node* nextNode = node->_next;
-		Node* _prevNode = node->_prev;
+		Node* prevNode = node->_prev;
 
 		// consistency checks
 		assert((node == _head) ? (node->_prev == NULL) : true);
@@ -136,11 +136,11 @@ public:
 
 		if (node != _tail)
 		{
-			node->_next->_prev = _prevNode;
+			node->_next->_prev = prevNode;
 		}
 		else
 		{
-			_tail = _prevNode;
+			_tail = prevNode;
 		}
 
 		delete node;
