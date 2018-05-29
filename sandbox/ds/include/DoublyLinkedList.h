@@ -3,7 +3,6 @@
 #include <assert.h>
 #include <iostream>
 #include <stdint.h>
-#include <stdlib.h>
 
 template <typename T>
 class DoublyLinkedList
