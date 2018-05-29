@@ -86,12 +86,12 @@ public:
 		return _size;
 	}
 
-	Node* push_back(const T& val)
+	void push_back(const T& val)
 	{
 		if (_head == NULL)
 		{
 			push_first_node(val);
-			return _head;
+			return;
 		}
 
 		Node* newTail = new Node(val);
@@ -100,16 +100,14 @@ public:
 		_tail->_next = newTail;
 		_tail = newTail;
 		_size++;
-
-		return _tail;
 	}
 
-	Node* push_front(const T& val)
+	void push_front(const T& val)
 	{
 		if (_head == NULL)
 		{
 			push_first_node(val);
-			return _head;
+			return;
 		}
 
 		Node* newHead = new Node(val);
@@ -117,8 +115,34 @@ public:
 		newHead->_val = val;
 		_head = newHead;
 		_size++;
+	}
 
-		return _head;
+	void pop_back()
+	{
+		if (_size == 0)
+		{
+			return;
+		}
+
+		if (_size == 1)
+		{
+			_head = _tail = NULL;
+			_size = 0;
+			return;
+		}
+
+		Node* node = _head;
+		Node* prev = node;
+
+		while ((node != NULL) && (node != _tail))
+		{
+			prev = node;
+			node = node->_next;
+		}
+
+		prev->_next = NULL;
+		_tail = prev;
+		_size--;
 	}
 
 	void remove(const T& val)
