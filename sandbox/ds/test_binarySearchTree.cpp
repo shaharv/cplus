@@ -1,11 +1,16 @@
 #include "include/BinarySearchTree.h"
 
+#include <iostream>
+
 void test_BST_print_empty();
 void test_BST_int_tree_01();
 void test_BST_int_tree_02();
 void test_BST_int_tree_03();
 void test_BST_strings_01();
 void test_BST_strings_02();
+
+using std::cerr;
+using std::endl;
 
 int main()
 {
@@ -115,6 +120,11 @@ void test_BST_strings_02()
 	tree.insert("perverted");
 	tree.insert("professionals.");
 	tree.print();
+
+	if (!tree.findDFS("amateurs"))
+	{
+		cerr << "Test failed! \"amateurs\" not find in tree search." << endl;
+	}
 
 	return;
 }

@@ -81,8 +81,36 @@ public:
 		std::cout << std::endl;
 	}
 
+	bool findDFS(const T& val)
+	{
+		return (findDFS(_root, val) != NULL);
+	}
+
 private:
-	void printSubtree(Node* root, const std::string prefix)
+	// preorder DFS
+	Node* findDFS(Node* root, const T& val)
+	{
+		if (root == NULL)
+		{
+			return NULL;
+		}
+
+		if (root->val == val)
+		{
+			return root;
+		}
+
+		Node* found = findDFS(root->left, val);
+
+		if (found != NULL)
+		{
+			return found;
+		}
+
+		return findDFS(root->right, val);
+	}
+
+	void printSubtree(Node* root, const std::string& prefix)
 	{
 		if (root == NULL)
 		{
