@@ -1,5 +1,7 @@
 #pragma once
 
+#include "StackArray.h"
+
 #include <iostream>
 #include <stdint.h>
 #include <string>
@@ -81,14 +83,19 @@ public:
 		std::cout << std::endl;
 	}
 
-	bool findDFS(const T& val)
+	bool findDFSRecursive(const T& val)
 	{
-		return (findDFS(_root, val) != NULL);
+		return (findDFSRecursive(_root, val) != NULL);
+	}
+
+	bool findDFSIterative(const T& val)
+	{
+		return (findDFSIterative(_root, val) != NULL);
 	}
 
 private:
-	// preorder DFS
-	Node* findDFS(Node* root, const T& val)
+	// preorder recursive DFS
+	Node* findDFSRecursive(Node* root, const T& val)
 	{
 		if (root == NULL)
 		{
@@ -100,14 +107,52 @@ private:
 			return root;
 		}
 
-		Node* found = findDFS(root->left, val);
+		Node* found = findDFSRecursive(root->left, val);
 
 		if (found != NULL)
 		{
 			return found;
 		}
 
-		return findDFS(root->right, val);
+		return findDFSRecursive(root->right, val);
+	}
+
+	// preorder iterative DFS
+	Node* findDFSIterative(Node* root, const T& val)
+	{
+		if (root == NULL)
+		{
+			return NULL;
+		}
+
+		StackArray<BinarySearchTree<T>::Node*> stack;
+		stack.push_back(root);
+
+		while (!stack.empty())
+		{
+			Node* node = stack.top();
+
+			if (node->val == val)
+			{
+				return node;
+			}
+
+			Node* rightChild = node->right;
+			Node* leftChild = node->left;
+			stack.pop_back();
+
+			if (leftChild != NULL)
+			{
+				stack.push_back(leftChild);
+			}
+
+			if (rightChild != NULL)
+			{
+				stack.push_back(rightChild);
+			}
+		}
+
+		return NULL;
 	}
 
 	void printSubtree(Node* root, const std::string& prefix)

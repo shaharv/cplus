@@ -10,6 +10,7 @@ void test_BST_strings_01();
 void test_BST_strings_02();
 
 using std::cerr;
+using std::cout;
 using std::endl;
 
 int main()
@@ -121,10 +122,24 @@ void test_BST_strings_02()
 	tree.insert("professionals.");
 	tree.print();
 
-	if (!tree.findDFS("amateurs"))
+	if (!tree.findDFSRecursive("amateurs"))
 	{
 		cerr << "Test failed! \"amateurs\" not find in tree search." << endl;
 	}
+	else
+	{
+		cout << "Recursive DFS search: OK." << endl;
+	}
 
+	if (!tree.findDFSIterative("amateurs"))
+	{
+		cerr << "Test failed! \"amateurs\" not find in tree search." << endl;
+	}
+	else
+	{
+		cout << "Iterative DFS search: OK." << endl;
+	}
+
+	cout << endl;
 	return;
 }
