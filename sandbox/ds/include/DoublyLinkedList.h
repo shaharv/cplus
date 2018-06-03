@@ -11,7 +11,7 @@ private:
 	class Node
 	{
 	public:
-		Node(T val) : _prev(NULL), _next(NULL), _val(val)
+		Node(const T& val) : _prev(NULL), _next(NULL), _val(val)
 		{
 		}
 
@@ -19,13 +19,15 @@ private:
 		{
 		}
 
+		const T& val() { return _val; }
+
 	private:
 		Node(const Node&);
 		const Node& operator=(const Node&);
 
 		Node* _prev;
 		Node* _next;
-		T _val;
+		const T& _val;
 
 		friend class DoublyLinkedList;
 	};
@@ -87,7 +89,7 @@ public:
 		return _size;
 	}
 
-	Node* insert(T val)
+	Node* insert(const T& val)
 	{
 		if (_head == NULL)
 		{
@@ -101,7 +103,6 @@ public:
 		Node* newTail = new Node(val);
 		newTail->_prev = _tail;
 		newTail->_next = NULL;
-		newTail->_val = val;
 		_tail->_next = newTail;
 		_tail = newTail;
 		_size++;
