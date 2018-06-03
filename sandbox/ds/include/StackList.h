@@ -27,14 +27,19 @@ public:
 		_list.reverse();
 	}
 
-	T& top()
+	const T& top()
 	{
-		return _list.tail()->val;
+		return _list.tail()->val();
 	}
 
 	int32_t size()
 	{
 		return _list.size();
+	}
+
+	bool empty()
+	{
+		return (size() == 0);
 	}
 
 private:

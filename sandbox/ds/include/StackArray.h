@@ -102,6 +102,11 @@ public:
 		return _size;
 	}
 
+	bool empty()
+	{
+		return (size() == 0);
+	}
+
 private:
 	void swap(StackArray& a, StackArray& b)
 	{
