@@ -1,20 +1,35 @@
 #include "include/BinarySearchTree.h"
 
-void test_BST();
+void test_BST_print_empty();
+void test_BST_int_tree_01();
+void test_BST_int_tree_02();
+void test_BST_int_tree_03();
+void test_BST_strings_01();
+void test_BST_strings_02();
 
 int main()
 {
-	test_BST();
+	test_BST_print_empty();
+	test_BST_int_tree_01();
+	test_BST_int_tree_02();
+	test_BST_int_tree_03();
+	test_BST_strings_01();
+	test_BST_strings_02();
 
 	return 0;
 }
 
-void test_BST()
+void test_BST_print_empty()
 {
-	BinarySearchTree<int32_t> tree, tree2, tree3;
+	BinarySearchTree<int32_t> tree;
 
 	// Print empty tree
 	tree.print();
+}
+
+void test_BST_int_tree_01()
+{
+	BinarySearchTree<int32_t> tree;
 
 	tree.insert(5);
 	tree.insert(2);
@@ -22,64 +37,84 @@ void test_BST()
 	tree.insert(6);
 	tree.insert(4);
 	tree.insert(1);
+
 	tree.print();
+}
 
-	tree2.insert(2);
-	tree2.insert(3);
-	tree2.insert(4);
-	tree2.insert(5);
-	tree2.insert(6);
-	tree2.insert(1);
-	tree2.print();
+void test_BST_int_tree_02()
+{
+	BinarySearchTree<int32_t> tree;
 
-	tree3.insert(4);
-	tree3.insert(2);
-	tree3.insert(1);
-	tree3.insert(3);
-	tree3.insert(6);
-	tree3.insert(5);
-	tree3.insert(7);
-	tree3.print();
+	tree.insert(2);
+	tree.insert(3);
+	tree.insert(4);
+	tree.insert(5);
+	tree.insert(6);
+	tree.insert(1);
 
-	BinarySearchTree<std::string> stree, stree2;
+	tree.print();
+}
 
-	stree.insert("so");
-	stree.insert("long");
-	stree.insert("and");
-	stree.insert("thanks");
-	stree.insert("for");
-	stree.insert("all");
-	stree.insert("the");
-	stree.insert("fish");
-	stree.insert("...");
-	stree.print();
+void test_BST_int_tree_03()
+{
+	BinarySearchTree<int32_t> tree;
 
-	stree2.insert("PHP");
-	stree2.insert("is");
-	stree2.insert("a");
-	stree2.insert("minor");
-	stree2.insert("evil");
-	stree2.insert("perpetrated");
-	stree2.insert("and");
-	stree2.insert("created");
-	stree2.insert("by");
-	stree2.insert("incompetent");
-	stree2.insert("amateurs");
-	stree2.insert("whereas");
-	stree2.insert("Perl");
-	stree2.insert("is");
-	stree2.insert("a");
-	stree2.insert("great");
-	stree2.insert("and");
-	stree2.insert("insidious");
-	stree2.insert("evil");
-	stree2.insert("perpetrated");
-	stree2.insert("by");
-	stree2.insert("skilled");
-	stree2.insert("but");
-	stree2.insert("perverted");
-	stree2.insert("professionals.");
-	stree2.print();
+	tree.insert(4);
+	tree.insert(2);
+	tree.insert(1);
+	tree.insert(3);
+	tree.insert(6);
+	tree.insert(5);
+	tree.insert(7);
+	tree.print();
+}
+
+void test_BST_strings_01()
+{
+	BinarySearchTree<std::string> tree;
+
+	tree.insert("so");
+	tree.insert("long");
+	tree.insert("and");
+	tree.insert("thanks");
+	tree.insert("for");
+	tree.insert("all");
+	tree.insert("the");
+	tree.insert("fish");
+	tree.insert("...");
+	tree.print();
+}
+
+void test_BST_strings_02()
+{
+	BinarySearchTree<std::string> tree;
+
+	tree.insert("PHP");
+	tree.insert("is");
+	tree.insert("a");
+	tree.insert("minor");
+	tree.insert("evil");
+	tree.insert("perpetrated");
+	tree.insert("and");
+	tree.insert("created");
+	tree.insert("by");
+	tree.insert("incompetent");
+	tree.insert("amateurs");
+	tree.insert("whereas");
+	tree.insert("Perl");
+	tree.insert("is");
+	tree.insert("a");
+	tree.insert("great");
+	tree.insert("and");
+	tree.insert("insidious");
+	tree.insert("evil");
+	tree.insert("perpetrated");
+	tree.insert("by");
+	tree.insert("skilled");
+	tree.insert("but");
+	tree.insert("perverted");
+	tree.insert("professionals.");
+	tree.print();
 
 	return;
 }
