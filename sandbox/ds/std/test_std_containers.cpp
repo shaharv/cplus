@@ -83,11 +83,42 @@ void test_queue()
 	std::cout << std::endl;
 }
 
+template <typename Type, typename VecType, typename ContainerType>
+void test_queue(const VecType& vec)
+{
+	std::queue<Type, ContainerType> queue;
+
+	std::cout << "Enqueue values:" << std::endl;
+
+	for (typename VecType::const_iterator it = vec.begin(); it != vec.end(); ++it)
+	{
+		const Type& val = *it;
+		queue.push(val);
+		std::cout << val << std::endl;
+	}
+
+	std::cout << std::endl << "Dequeue values:" << std::endl;
+
+	while (!queue.empty())
+	{
+		std::cout << queue.front() << std::endl;
+		queue.pop();
+	}
+
+	std::cout << std::endl;
+}
+
 int main()
 {
 	test_stack();
 	test_priority_queue();
 	test_queue();
+
+	{
+		const std::string strArr[] = { "Yael", "Guy", "Galit", "Shahar", "1", "2" };
+		const std::vector<std::string> strVec(strArr, strArr + (sizeof(strArr) / sizeof(strArr[0])));
+		test_queue<std::string, std::vector<std::string>, std::deque<std::string> >(strVec);
+	}
 
 	return 0;
 }
