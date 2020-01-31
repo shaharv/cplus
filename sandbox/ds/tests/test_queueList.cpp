@@ -1,7 +1,7 @@
 #include <iostream>
 #include <stdint.h>
 
-#include "include/QueueList.h"
+#include "../include/QueueList.h"
 
 using std::cout;
 using std::endl;

@@ -1,7 +1,7 @@
 #include <iostream>
 #include <stdint.h>
 
-#include "include/StackArray.h"
+#include "../include/StackArray.h"
 
 using std::cout;
 using std::endl;

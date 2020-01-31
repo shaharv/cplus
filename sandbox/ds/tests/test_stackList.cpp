@@ -1,7 +1,7 @@
 #include <iostream>
 #include <stdint.h>
 
-#include "include/StackList.h"
+#include "../include/StackList.h"
 
 using std::cout;
 using std::endl;
