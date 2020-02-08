@@ -1,4 +1,7 @@
-// Codility LongestPassword
+// Codility LongestPassword - from Indeed Prime 2015 challenge
+// Difficuly: painless
+//
+// https://app.codility.com/programmers/lessons/90-tasks_from_indeed_prime_2015_challenge/longest_password
 //
 
 #include <algorithm>
