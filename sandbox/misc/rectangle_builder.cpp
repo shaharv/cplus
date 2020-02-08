@@ -1,4 +1,4 @@
-// Variant on Codility "Rectangle Builder Greater Area"
+// Codility "Rectangle Builder Greater Area"
 //
 
 #include <algorithm>
@@ -15,10 +15,11 @@ using std::map;
 using std::pair;
 using std::vector;
 
-// X, A[i] = [1...1B]
-// A size < 100,000
+// Find matching pens and print each pen found.
+// Not most efficient solution, since each matching pen is visited for being printed,
+// as opposed to using ranges where possible (possiblePens incremeted by at most 1 every time).
 //
-int solution_attempt(vector<int> &A, int X)
+int solution_verbose(vector<int> &A, int X)
 {
 	map<int, int> fencePieces;
 
@@ -168,15 +169,15 @@ int main()
 	solution_exact_area(vec1, 7);
 	solution_exact_area(vec1, 20);
 
-	solution_attempt(vec1, 4);
-	solution_attempt(vec1, 5);
-	solution_attempt(vec1, 6);
-	solution_attempt(vec1, 7);
-	solution_attempt(vec1, 20);
-	solution_attempt(vec1, 1000);
-	solution_attempt(vec1, 1);
-	solution_attempt(vec1, 40);
-	solution_attempt(vec1, 100);
+	solution_verbose(vec1, 4);
+	solution_verbose(vec1, 5);
+	solution_verbose(vec1, 6);
+	solution_verbose(vec1, 7);
+	solution_verbose(vec1, 20);
+	solution_verbose(vec1, 1000);
+	solution_verbose(vec1, 1);
+	solution_verbose(vec1, 40);
+	solution_verbose(vec1, 100);
 
 	return 0;
 }
