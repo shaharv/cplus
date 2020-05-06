@@ -1,8 +1,3 @@
-# include
-Reusable C++ headers.
+# cplus
 
-# testers
-Various small C++ testers and benchmarks.
-
-# snippets
-Useful C++ code snippets.
+C++ snippets, examples and templates.
