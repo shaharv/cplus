@@ -156,7 +156,7 @@ void basic_graph() {
 
 int main() {
     basic_graph();
-	graph_with_vertex_data();
+    graph_with_vertex_data();
 
     return 0;
 }
